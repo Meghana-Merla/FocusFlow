@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Calendar
 import java.util.Locale
+import android.media.MediaPlayer
 
 class MainActivity : AppCompatActivity() {
 
@@ -138,6 +139,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
+
+                MediaPlayer.create(this@MainActivity, R.raw.bell).start()
 
                 timerRunning = false
 
