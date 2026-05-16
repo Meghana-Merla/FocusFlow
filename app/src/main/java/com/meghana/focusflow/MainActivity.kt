@@ -10,6 +10,10 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvTimer: TextView
+
+    private lateinit var tvSessions: TextView
+
+    private var sessionCount = 0
     private lateinit var btnStart: Button
 
     private var timeLeftInMillis: Long = 1500000
@@ -22,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         tvTimer = findViewById(R.id.tvTimer)
+        tvSessions = findViewById(R.id.tvSessions)
         btnStart = findViewById(R.id.btnStart)
 
         val btnPause = findViewById<Button>(R.id.btnPause)
@@ -69,6 +74,14 @@ class MainActivity : AppCompatActivity() {
             override fun onFinish() {
 
                 timerRunning = false
+
+                sessionCount++
+
+                tvSessions.text = "Sessions Completed: $sessionCount"
+
+                timeLeftInMillis = 1500000
+
+                updateTimerText()
             }
         }.start()
 
