@@ -2,7 +2,9 @@ package com.meghana.focusflow
 
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Calendar
@@ -19,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnPause: Button
     private lateinit var btnReset: Button
 
+    private lateinit var spinnerTime: Spinner
+
     private var sessionCount = 0
 
     private val quotes = listOf(
@@ -29,7 +33,9 @@ class MainActivity : AppCompatActivity() {
         "Consistency creates success."
     )
 
-    private var timeLeftInMillis: Long = 1500000
+    private var selectedTimeInMillis: Long = 1500000
+    private var timeLeftInMillis: Long = selectedTimeInMillis
+
     private var timerRunning = false
 
     private var countDownTimer: CountDownTimer? = null
@@ -47,6 +53,18 @@ class MainActivity : AppCompatActivity() {
         btnPause = findViewById(R.id.btnPause)
         btnReset = findViewById(R.id.btnReset)
 
+        spinnerTime = findViewById(R.id.spinnerTime)
+
+        val timeOptions = arrayOf("25 min", "45 min", "60 min")
+
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            timeOptions
+        )
+
+        spinnerTime.adapter = adapter
+
         updateTimerText()
         setGreeting()
 
@@ -54,6 +72,17 @@ class MainActivity : AppCompatActivity() {
         btnReset.isEnabled = false
 
         btnStart.setOnClickListener {
+
+            selectedTimeInMillis = when (spinnerTime.selectedItem.toString()) {
+
+                "25 min" -> 1500000
+                "45 min" -> 2700000
+                else -> 3600000
+            }
+
+            if (!timerRunning && timeLeftInMillis == selectedTimeInMillis) {
+                timeLeftInMillis = selectedTimeInMillis
+            }
 
             if (!timerRunning) {
                 startTimer()
@@ -77,7 +106,7 @@ class MainActivity : AppCompatActivity() {
 
             countDownTimer?.cancel()
 
-            timeLeftInMillis = 1500000
+            timeLeftInMillis = selectedTimeInMillis
 
             updateTimerText()
 
@@ -114,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 
                 tvQuote.text = quotes.random()
 
-                timeLeftInMillis = 1500000
+                timeLeftInMillis = selectedTimeInMillis
 
                 updateTimerText()
             }
