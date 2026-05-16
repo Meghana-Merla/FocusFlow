@@ -1,5 +1,6 @@
 package com.meghana.focusflow
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.ArrayAdapter
@@ -7,10 +8,10 @@ import android.widget.Button
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.util.Calendar
 import java.util.Locale
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvSessions: TextView
     private lateinit var tvQuote: TextView
     private lateinit var tvSessionType: TextView
+
     private lateinit var btnResetSessions: Button
 
     private lateinit var btnStart: Button
@@ -26,6 +28,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnReset: Button
 
     private lateinit var spinnerTime: Spinner
+
+    private lateinit var progressIndicator: CircularProgressIndicator
 
     private var sessionCount = 0
 
@@ -47,7 +51,9 @@ class MainActivity : AppCompatActivity() {
     private var countDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -57,9 +63,12 @@ class MainActivity : AppCompatActivity() {
         tvQuote = findViewById(R.id.tvQuote)
         tvSessionType = findViewById(R.id.tvSessionType)
 
+        progressIndicator = findViewById(R.id.progressIndicator)
+
         btnStart = findViewById(R.id.btnStart)
         btnPause = findViewById(R.id.btnPause)
         btnReset = findViewById(R.id.btnReset)
+
         btnResetSessions = findViewById(R.id.btnResetSessions)
 
         spinnerTime = findViewById(R.id.spinnerTime)
@@ -79,6 +88,8 @@ class MainActivity : AppCompatActivity() {
 
         btnPause.isEnabled = false
         btnReset.isEnabled = false
+
+        progressIndicator.progress = 100
 
         btnStart.setOnClickListener {
 
@@ -126,6 +137,8 @@ class MainActivity : AppCompatActivity() {
 
             timeLeftInMillis = selectedTimeInMillis
 
+            progressIndicator.progress = 100
+
             updateTimerText()
 
             timerRunning = false
@@ -134,6 +147,7 @@ class MainActivity : AppCompatActivity() {
             btnPause.isEnabled = false
             btnReset.isEnabled = false
         }
+
         btnResetSessions.setOnClickListener {
 
             sessionCount = 0
@@ -150,6 +164,18 @@ class MainActivity : AppCompatActivity() {
 
                 timeLeftInMillis = millisUntilFinished
 
+                val totalTime = if (isBreakTime) {
+                    300000L
+                } else {
+                    selectedTimeInMillis
+                }
+
+                val progress = (
+                        (timeLeftInMillis.toFloat() / totalTime.toFloat()) * 100
+                        ).toInt()
+
+                progressIndicator.progress = progress
+
                 updateTimerText()
             }
 
@@ -162,6 +188,8 @@ class MainActivity : AppCompatActivity() {
                 btnStart.isEnabled = true
                 btnPause.isEnabled = false
                 btnReset.isEnabled = false
+
+                progressIndicator.progress = 100
 
                 if (!isBreakTime) {
 
@@ -229,6 +257,6 @@ class MainActivity : AppCompatActivity() {
             seconds
         )
 
-        tvTimer.text = "⏳ $timeFormatted"
+        tvTimer.text = timeFormatted
     }
 }
