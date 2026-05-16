@@ -133,11 +133,13 @@ class MainActivity : AppCompatActivity() {
 
         val greeting = when {
 
-            hour < 12 -> "Good Morning ☀️"
+            hour in 5..11 -> "Good Morning ☀️"
 
-            hour < 17 -> "Good Afternoon 🌤️"
+            hour in 12..16 -> "Good Afternoon 🌤️"
 
-            else -> "Good Evening 🌙"
+            hour in 17..21 -> "Good Evening 🌙"
+
+            else -> "Late Night 🌌"
         }
 
         tvGreeting.text = greeting
