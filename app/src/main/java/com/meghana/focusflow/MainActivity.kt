@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import java.util.Calendar
 import java.util.Locale
 import android.media.MediaPlayer
+import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     private var countDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
