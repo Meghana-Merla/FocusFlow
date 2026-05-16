@@ -87,8 +87,13 @@ class MainActivity : AppCompatActivity() {
                 else -> 3600000
             }
 
-            if (!timerRunning && !isBreakTime) {
-                timeLeftInMillis = selectedTimeInMillis
+            if (!timerRunning && timeLeftInMillis <= 0) {
+
+                timeLeftInMillis = if (isBreakTime) {
+                    300000
+                } else {
+                    selectedTimeInMillis
+                }
             }
 
             if (!timerRunning) {
