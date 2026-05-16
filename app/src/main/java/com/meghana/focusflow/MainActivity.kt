@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         val btnPause = findViewById<Button>(R.id.btnPause)
 
+        val btnReset = findViewById<Button>(R.id.btnReset)
+
         updateTimerText()
 
         btnStart.setOnClickListener {
@@ -42,6 +44,15 @@ class MainActivity : AppCompatActivity() {
                 countDownTimer.cancel()
                 timerRunning = false
             }
+        }
+        btnReset.setOnClickListener {
+
+            countDownTimer.cancel()
+
+            timeLeftInMillis = 1500000
+            updateTimerText()
+
+            timerRunning = false
         }
     }
 
