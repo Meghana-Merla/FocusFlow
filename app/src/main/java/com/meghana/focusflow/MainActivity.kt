@@ -24,12 +24,23 @@ class MainActivity : AppCompatActivity() {
         tvTimer = findViewById(R.id.tvTimer)
         btnStart = findViewById(R.id.btnStart)
 
+        val btnPause = findViewById<Button>(R.id.btnPause)
+
         updateTimerText()
 
         btnStart.setOnClickListener {
 
             if (!timerRunning) {
                 startTimer()
+            }
+        }
+
+        btnPause.setOnClickListener {
+
+            if (timerRunning) {
+
+                countDownTimer.cancel()
+                timerRunning = false
             }
         }
     }
