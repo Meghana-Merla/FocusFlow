@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.util.Calendar
 import java.util.Locale
+import android.content.SharedPreferences
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvSessions: TextView
     private lateinit var tvQuote: TextView
     private lateinit var tvSessionType: TextView
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var btnResetSessions: Button
 
@@ -57,9 +60,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        sharedPreferences = getSharedPreferences("FocusFlowPrefs", MODE_PRIVATE)
+
         tvGreeting = findViewById(R.id.tvGreeting)
         tvTimer = findViewById(R.id.tvTimer)
         tvSessions = findViewById(R.id.tvSessions)
+
+        sessionCount = sharedPreferences.getInt("sessionCount", 0)
+
+        tvSessions.text = "Sessions Completed: $sessionCount"
+
         tvQuote = findViewById(R.id.tvQuote)
         tvSessionType = findViewById(R.id.tvSessionType)
 
@@ -153,6 +163,11 @@ class MainActivity : AppCompatActivity() {
             sessionCount = 0
 
             tvSessions.text = "Sessions Completed: 0"
+
+            sharedPreferences.edit()
+                .putInt("sessionCount", 0)
+                .apply()
+
         }
     }
 
@@ -196,6 +211,10 @@ class MainActivity : AppCompatActivity() {
                     sessionCount++
 
                     tvSessions.text = "Sessions Completed: $sessionCount"
+
+                    sharedPreferences.edit()
+                        .putInt("sessionCount", sessionCount)
+                        .apply()
 
                     tvQuote.text = quotes.random()
 
