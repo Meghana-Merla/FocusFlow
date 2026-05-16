@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    android:background="#FFFFFF">
+    android:background="?android:colorBackground">
 
     <TextView
         android:id="@+id/tvGreeting"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="#111111"/>
+        android:textColor="?android:textColorPrimary"/>
 
     <TextView
         android:id="@+id/tvTimer"
@@ -24,7 +24,7 @@
         android:textSize="64sp"
         android:textStyle="bold"
         android:layout_marginTop="40dp"
-        android:textColor="#000000"/>
+        android:textColor="?android:textColorPrimary"/>
 
     <TextView
         android:id="@+id/tvSessionType"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Focus Session"
         android:textSize="16sp"
-        android:textColor="#666666"
+        android:textColor="?android:textColorSecondary"
         android:layout_marginTop="8dp"/>
 
     <Spinner
@@ -76,7 +76,7 @@
         android:text="Sessions Completed: 0"
         android:textSize="18sp"
         android:layout_marginTop="40dp"
-        android:textColor="#333333"/>
+        android:textColor="?android:textColorSecondary"/>
 
     <TextView
         android:id="@+id/tvQuote"
@@ -86,6 +86,6 @@
         android:textSize="14sp"
         android:gravity="center"
         android:layout_marginTop="20dp"
-        android:textColor="#666666"/>
+        android:textColor="?android:textColorSecondary"/>
 
 </LinearLayout>
