@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvTimer: TextView
     private lateinit var tvSessions: TextView
     private lateinit var tvQuote: TextView
+    private lateinit var tvSessionType: TextView
 
     private lateinit var btnStart: Button
     private lateinit var btnPause: Button
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var spinnerTime: Spinner
 
     private var sessionCount = 0
+
+    private var isBreakTime = false
 
     private val quotes = listOf(
         "Stay focused and never quit.",
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         tvTimer = findViewById(R.id.tvTimer)
         tvSessions = findViewById(R.id.tvSessions)
         tvQuote = findViewById(R.id.tvQuote)
+        tvSessionType = findViewById(R.id.tvSessionType)
 
         btnStart = findViewById(R.id.btnStart)
         btnPause = findViewById(R.id.btnPause)
@@ -80,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                 else -> 3600000
             }
 
-            if (!timerRunning && timeLeftInMillis == selectedTimeInMillis) {
+            if (!timerRunning && !isBreakTime) {
                 timeLeftInMillis = selectedTimeInMillis
             }
 
@@ -105,6 +109,10 @@ class MainActivity : AppCompatActivity() {
         btnReset.setOnClickListener {
 
             countDownTimer?.cancel()
+
+            isBreakTime = false
+
+            tvSessionType.text = "Focus Session"
 
             timeLeftInMillis = selectedTimeInMillis
 
@@ -137,15 +145,32 @@ class MainActivity : AppCompatActivity() {
                 btnPause.isEnabled = false
                 btnReset.isEnabled = false
 
-                sessionCount++
+                if (!isBreakTime) {
 
-                tvSessions.text = "Sessions Completed: $sessionCount"
+                    sessionCount++
 
-                tvQuote.text = quotes.random()
+                    tvSessions.text = "Sessions Completed: $sessionCount"
 
-                timeLeftInMillis = selectedTimeInMillis
+                    tvQuote.text = quotes.random()
+
+                    isBreakTime = true
+
+                    tvSessionType.text = "Break Time ☕"
+
+                    timeLeftInMillis = 300000
+
+                } else {
+
+                    isBreakTime = false
+
+                    tvSessionType.text = "Focus Session"
+
+                    timeLeftInMillis = selectedTimeInMillis
+                }
 
                 updateTimerText()
+
+                startTimer()
             }
         }.start()
 
