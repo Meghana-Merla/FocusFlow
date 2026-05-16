@@ -5,16 +5,19 @@ import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import java.util.Locale
 import java.util.Calendar
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var tvGreeting: TextView
-
     private lateinit var tvTimer: TextView
-
     private lateinit var tvSessions: TextView
+    private lateinit var tvQuote: TextView
+
+    private lateinit var btnStart: Button
+    private lateinit var btnPause: Button
+    private lateinit var btnReset: Button
 
     private var sessionCount = 0
 
@@ -25,31 +28,30 @@ class MainActivity : AppCompatActivity() {
         "One session at a time.",
         "Consistency creates success."
     )
-    private lateinit var btnStart: Button
 
     private var timeLeftInMillis: Long = 1500000
     private var timerRunning = false
 
     private var countDownTimer: CountDownTimer? = null
-    private lateinit var tvQuote: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        tvGreeting = findViewById(R.id.tvGreeting)
         tvTimer = findViewById(R.id.tvTimer)
         tvSessions = findViewById(R.id.tvSessions)
         tvQuote = findViewById(R.id.tvQuote)
-        tvGreeting = findViewById(R.id.tvGreeting)
+
         btnStart = findViewById(R.id.btnStart)
-
-        val btnPause = findViewById<Button>(R.id.btnPause)
-
-        val btnReset = findViewById<Button>(R.id.btnReset)
+        btnPause = findViewById(R.id.btnPause)
+        btnReset = findViewById(R.id.btnReset)
 
         updateTimerText()
-
         setGreeting()
+
+        btnPause.isEnabled = false
+        btnReset.isEnabled = false
 
         btnStart.setOnClickListener {
 
@@ -63,19 +65,27 @@ class MainActivity : AppCompatActivity() {
             if (timerRunning) {
 
                 countDownTimer?.cancel()
+
                 timerRunning = false
+
                 btnStart.isEnabled = true
+                btnPause.isEnabled = false
             }
         }
+
         btnReset.setOnClickListener {
 
             countDownTimer?.cancel()
 
             timeLeftInMillis = 1500000
+
             updateTimerText()
 
             timerRunning = false
+
             btnStart.isEnabled = true
+            btnPause.isEnabled = false
+            btnReset.isEnabled = false
         }
     }
 
@@ -86,6 +96,7 @@ class MainActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
 
                 timeLeftInMillis = millisUntilFinished
+
                 updateTimerText()
             }
 
@@ -94,6 +105,8 @@ class MainActivity : AppCompatActivity() {
                 timerRunning = false
 
                 btnStart.isEnabled = true
+                btnPause.isEnabled = false
+                btnReset.isEnabled = false
 
                 sessionCount++
 
@@ -110,6 +123,8 @@ class MainActivity : AppCompatActivity() {
         timerRunning = true
 
         btnStart.isEnabled = false
+        btnPause.isEnabled = true
+        btnReset.isEnabled = true
     }
 
     private fun setGreeting() {
@@ -140,6 +155,6 @@ class MainActivity : AppCompatActivity() {
             seconds
         )
 
-        tvTimer.text = timeFormatted
+        tvTimer.text = "⏳ $timeFormatted"
     }
 }
