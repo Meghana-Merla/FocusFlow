@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvSessions: TextView
     private lateinit var tvQuote: TextView
     private lateinit var tvSessionType: TextView
+    private lateinit var btnResetSessions: Button
 
     private lateinit var btnStart: Button
     private lateinit var btnPause: Button
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         btnStart = findViewById(R.id.btnStart)
         btnPause = findViewById(R.id.btnPause)
         btnReset = findViewById(R.id.btnReset)
+        btnResetSessions = findViewById(R.id.btnResetSessions)
 
         spinnerTime = findViewById(R.id.spinnerTime)
 
@@ -131,6 +133,12 @@ class MainActivity : AppCompatActivity() {
             btnStart.isEnabled = true
             btnPause.isEnabled = false
             btnReset.isEnabled = false
+        }
+        btnResetSessions.setOnClickListener {
+
+            sessionCount = 0
+
+            tvSessions.text = "Sessions Completed: 0"
         }
     }
 
