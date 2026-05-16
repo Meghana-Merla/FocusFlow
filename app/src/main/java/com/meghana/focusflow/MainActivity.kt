@@ -6,8 +6,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.util.Locale
+import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var tvGreeting: TextView
 
     private lateinit var tvTimer: TextView
 
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         tvTimer = findViewById(R.id.tvTimer)
         tvSessions = findViewById(R.id.tvSessions)
         tvQuote = findViewById(R.id.tvQuote)
+        tvGreeting = findViewById(R.id.tvGreeting)
         btnStart = findViewById(R.id.btnStart)
 
         val btnPause = findViewById<Button>(R.id.btnPause)
@@ -44,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         val btnReset = findViewById<Button>(R.id.btnReset)
 
         updateTimerText()
+
+        setGreeting()
 
         btnStart.setOnClickListener {
 
@@ -56,8 +62,9 @@ class MainActivity : AppCompatActivity() {
 
             if (timerRunning) {
 
-                countDownTimer.cancel()
+                countDownTimer?.cancel()
                 timerRunning = false
+                btnStart.isEnabled = true
             }
         }
         btnReset.setOnClickListener {
@@ -68,6 +75,7 @@ class MainActivity : AppCompatActivity() {
             updateTimerText()
 
             timerRunning = false
+            btnStart.isEnabled = true
         }
     }
 
@@ -85,6 +93,8 @@ class MainActivity : AppCompatActivity() {
 
                 timerRunning = false
 
+                btnStart.isEnabled = true
+
                 sessionCount++
 
                 tvSessions.text = "Sessions Completed: $sessionCount"
@@ -98,6 +108,24 @@ class MainActivity : AppCompatActivity() {
         }.start()
 
         timerRunning = true
+
+        btnStart.isEnabled = false
+    }
+
+    private fun setGreeting() {
+
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+        val greeting = when {
+
+            hour < 12 -> "Good Morning ☀️"
+
+            hour < 17 -> "Good Afternoon 🌤️"
+
+            else -> "Good Evening 🌙"
+        }
+
+        tvGreeting.text = greeting
     }
 
     private fun updateTimerText() {
